@@ -46,6 +46,20 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 }
 
+resource "azurerm_virtual_machine_extension" "example" {
+  name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
+  virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.0"
+
+  settings = <<SETTINGS
+    {
+        "commandToExecute": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')); Invoke-Expression -Command 'choco install -y choco install powershell-core git terraform vscode googlechrome'"
+    }
+SETTINGS
+
+}
 
 # resource "azurerm_virtual_machine_extension" "dscext" {
 #   name                 = var.dsc_config_name
