@@ -21,7 +21,7 @@ data "template_file" "provision" {
 resource "local_file" "ssh" {
     depends_on = [data.template_file.provision]
     content  = data.template_file.provision.rendered
-    filename = "provision.ps1"
+    filename = "./provision.ps1"
 }
 
 resource "azurerm_virtual_machine_extension" "ext" {
@@ -35,7 +35,7 @@ resource "azurerm_virtual_machine_extension" "ext" {
 
   protected_settings = <<SETTINGS
   {
-     "commandToExecute": "powershell -encodedCommand ${textencodebase64(file("provision.ps1"), "UTF-16LE")}"
+     "commandToExecute": "powershell -encodedCommand ${textencodebase64(file("./provision.ps1"), "UTF-16LE")}"
   }
   SETTINGS
 }
