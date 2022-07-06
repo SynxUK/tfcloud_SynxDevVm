@@ -8,12 +8,12 @@ data "azurerm_storage_account" "st" {
 }
 
 data "azurerm_virtual_network" "vnet" {
-  name = "${var.AppName}Vnet"
+  name                = "${var.AppName}Vnet"
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
 data "azurerm_subnet" "subnet" {
-  name = "${var.AppName}Subnet"
+  name                 = "${var.AppName}Subnet"
   resource_group_name  = data.azurerm_virtual_network.vnet.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
@@ -22,3 +22,5 @@ data "azurerm_network_security_group" "subnetnsg" {
   name                = "${var.AppName}SubnetNsg"
   resource_group_name = data.azurerm_resource_group.rg.name
 }
+
+

@@ -46,20 +46,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 }
 
-resource "azurerm_virtual_machine_extension" "ext" {
-  name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
-  #resource_group_name  = azurerm_resource_group.rg.name
-  virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
-  publisher            = "Microsoft.Compute"
-  type                 = "CustomScriptExtension"
-  type_handler_version = "1.9"
 
-  protected_settings = <<SETTINGS
-  {
-     "commandToExecute": "powershell -encodedCommand ${textencodebase64(file("provision.ps1"), "UTF-16LE")}"
-  }
-  SETTINGS
-}
 
 # resource "azurerm_virtual_machine_extension" "ext" {
 #   name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
