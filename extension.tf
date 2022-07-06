@@ -25,7 +25,6 @@ data "template_file" "provision" {
 # }
 
 resource "azurerm_virtual_machine_extension" "ext" {
-    depends_on = [local_file.ssh]
   name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
   #resource_group_name  = azurerm_resource_group.rg.name
   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
