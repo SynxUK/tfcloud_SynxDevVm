@@ -57,13 +57,35 @@ resource "azurerm_virtual_machine_extension" "ext" {
     { 
       "script": 
         [
-          "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')),
+          "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
           "choco install -y powershell-core git terraform vscode googlechrome"
         ],
       "fileUris": []
     } 
   SETTINGS
 }
+
+# resource "azurerm_virtual_machine_extension" "ext" {
+#   name                       = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
+#   location                   = azurerm_windows_virtual_machine.vm.location
+#   resource_group_name        = azurerm_windows_virtual_machine.vm.resource_group_name
+#   # virtual_machine_name       = azurerm_windows_virtual_machine.vm.name
+#   publisher                  = "Microsoft.CPlat.Core"
+#   type                       = "RunCommandWindows"
+#   type_handler_version       = "1.1"
+#   auto_upgrade_minor_version = true
+
+#   settings                   = <<SETTINGS
+#     { 
+#       "script": 
+#         [
+#           "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))",
+#           "choco install -y powershell-core git terraform vscode googlechrome"
+#         ],
+#       "fileUris": []
+#     } 
+#   SETTINGS
+# }
 
 # resource "azurerm_virtual_machine_extension" "dscext" {
 #   name                 = var.dsc_config_name
