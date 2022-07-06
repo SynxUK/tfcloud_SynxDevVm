@@ -2,7 +2,7 @@ terraform {
   cloud {
     organization = "SynxUK75"
     workspaces {
-      name = "tfcloud_DevBox"
+      name = "tfcloud_SynxDevVm"
     }
   }
   required_providers {
