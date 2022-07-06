@@ -48,22 +48,37 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
 resource "azurerm_virtual_machine_extension" "ext" {
   name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
+  #resource_group_name  = azurerm_resource_group.rg.name
   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.0"
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.9"
 
-  settings                   = <<SETTINGS
-    { 
-      "script": 
-        [
-          "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
-          "choco install -y powershell-core git terraform vscode googlechrome"
-        ],
-      "fileUris": []
-    } 
+  protected_settings = <<SETTINGS
+  {
+     "commandToExecute": "powershell -encodedCommand ${textencodebase64(file("provision.ps1"), "UTF-16LE")}"
+  }
   SETTINGS
 }
+
+# resource "azurerm_virtual_machine_extension" "ext" {
+#   name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
+#   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
+#   publisher            = "Microsoft.Azure.Extensions"
+#   type                 = "CustomScript"
+#   type_handler_version = "2.0"
+
+#   settings                   = <<SETTINGS
+#     { 
+#       "script": 
+#         [
+#           "Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+#           "choco install -y powershell-core git terraform vscode googlechrome"
+#         ],
+#       "fileUris": []
+#     } 
+#   SETTINGS
+# }
 
 # resource "azurerm_virtual_machine_extension" "ext" {
 #   name                       = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
