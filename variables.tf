@@ -7,3 +7,7 @@ variable "Location" {
   type = string
   description = "Singular Azure location for the deployment"
 }
+variable "VmName" {
+  type = string
+  description = "The Name of the VM to deploy"
+}

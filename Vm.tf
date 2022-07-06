@@ -1,20 +1,20 @@
 
 resource "azurerm_public_ip" "ip" {
-  name                = "${var.AppName}${terraform.workspace}Ip"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  name                = "${var.VmName}${lower("${local.VmNameHash}")}Ip"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   allocation_method   = "Dynamic"
-  domain_name_label = "devbox${lower("${terraform.workspace}")}"
+  domain_name_label = "${lower("${var.VmName}")}${lower("${local.VmNameHash}")}"
 }
 
 resource "azurerm_network_interface" "nic" {
-  name                = "${var.AppName}${terraform.workspace}Nic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  name                = "${var.VmName}${lower("${local.VmNameHash}")}Nic"
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.subnet.id
+    subnet_id                     = data.azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id = azurerm_public_ip.ip.id
   }
@@ -23,9 +23,9 @@ resource "azurerm_network_interface" "nic" {
 
 
 resource "azurerm_windows_virtual_machine" "vm" {
-  name                = "${terraform.workspace}Vm"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  name                = "${var.VmName}${lower("${local.VmNameHash}")}Vm"
+  resource_group_name = data.azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
   size                = "Standard_B4ms"
   admin_username      = "stuart"
   admin_password      = "P@ssw0rd1234"

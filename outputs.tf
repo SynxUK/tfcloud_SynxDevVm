@@ -1,3 +1,3 @@
 output "rg" {
-  value = azurerm_resource_group.rg.id
+  value = data.azurerm_resource_group.rg.id
 }
