@@ -1,3 +1,3 @@
 output "rg" {
-  value = data.azurerm_resource_group.rg.id
+  value = azurerm_public_ip.ip.fqdn
 }
