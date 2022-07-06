@@ -11,6 +11,7 @@ data "azurerm_key_vault_secret" "ssh" {
 }
 
 data "template_file" "provision" {
+    depends_on = [data.azurerm_key_vault_secret.ssh]
   template = file("${path.module}/Powershell/provision.tpl.ps1")
   vars = {
     SshKey = data.azurerm_key_vault_secret.ssh.value
@@ -18,11 +19,13 @@ data "template_file" "provision" {
 }
 
 resource "local_file" "ssh" {
+    depends_on = [data.template_file.provision]
     content  = data.template_file.provision.rendered
     filename = "provision.ps1"
 }
 
 resource "azurerm_virtual_machine_extension" "ext" {
+    depends_on = [local_file.ssh]
   name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
   #resource_group_name  = azurerm_resource_group.rg.name
   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
