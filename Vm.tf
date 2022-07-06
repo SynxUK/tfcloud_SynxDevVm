@@ -46,7 +46,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 }
 
-resource "azurerm_virtual_machine_extension" "example" {
+resource "azurerm_virtual_machine_extension" "ext" {
   name                 = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
   publisher            = "Microsoft.Azure.Extensions"
