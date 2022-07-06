@@ -18,24 +18,23 @@ data "template_file" "provision" {
   }
 }
 
-resource "local_file" "ssh" {
-    depends_on = [data.template_file.provision]
-    content  = data.template_file.provision.rendered
-    filename = "./provision.ps1"
-}
-
-# resource "azurerm_virtual_machine_extension" "ext" {
-#   depends_on = [data.template_file.provision]
-#   name       = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
-#   #resource_group_name  = azurerm_resource_group.rg.name
-#   virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
-#   publisher            = "Microsoft.Compute"
-#   type                 = "CustomScriptExtension"
-#   type_handler_version = "1.9"
-
-#   protected_settings = <<SETTINGS
-#   {
-#      "commandToExecute": "powershell -encodedCommand ${textencodebase64("${data.template_file.provision.rendered}", "UTF-16LE")}"
-#   }
-#   SETTINGS
+# resource "local_file" "ssh" {
+#     depends_on = [data.template_file.provision]
+#     content  = data.template_file.provision.rendered
+#     filename = "./provision.ps1"
 # }
+
+resource "azurerm_virtual_machine_extension" "ext" {
+  depends_on = [data.template_file.provision]
+  name       = "${var.VmName}${lower("${local.VmNameHash}")}Ext"
+  virtual_machine_id   = azurerm_windows_virtual_machine.vm.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.9"
+
+  protected_settings = <<SETTINGS
+  {
+     "commandToExecute": "powershell -encodedCommand ${textencodebase64("${data.template_file.provision.rendered}", "UTF-16LE")}"
+  }
+  SETTINGS
+}
