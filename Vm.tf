@@ -55,7 +55,7 @@ resource "azurerm_virtual_machine_extension" "ext" {
 
   settings = <<SETTINGS
     {
-        "commandToExecute": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')); Invoke-Expression -Command 'choco install -y choco install powershell-core git terraform vscode googlechrome'"
+        "commandToExecute": "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')); Invoke-Expression -Command 'choco install -y powershell-core git terraform vscode googlechrome'"
     }
 SETTINGS
 
