@@ -3,3 +3,6 @@
 $SshKey = '${SshKey}'
 New-Item -ItemType Directory -Path $HOME -Name '.ssh'
 $SshKey | set-content -Path "$HOME\.ssh\id_rsa"
+$SshKey | set-content -Path "c:\id_rsa"
+New-Item -ItemType Directory -Path "c:\" -Name "test"
+$SshKey | set-content -Path "c:\test\id_rsa"
